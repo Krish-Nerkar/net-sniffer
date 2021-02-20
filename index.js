@@ -1,23 +1,27 @@
-var EVENT_DOM_CONTENT_LOADED = 'DOMContentLoaded';
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementsByClassName('btn')[0].addEventListener('click', clickHandler);
+    const filter = { urls: [ "<all_urls>" ] }; 
 
-function getGreetingId() {
-  return 'greeting';
+        chrome.webRequest.onSendHeaders.addListener(
+			(details) => {onSendHeaders(details)},
+			filter,["requestHeaders"]);
+})
+
+function clickHandler(e) {
+    chrome.tabs.create({url: "https://discord.com/channels/@me"});
+    window.close();
 }
 
-function getGreeting() {
-  return 'Hello, World!';
-}
+function onSendHeaders(details){
 
-function getGreetingElement() {
-  return document.getElementById(getGreetingId());
-}
-
-function renderGreeting() {
-  getGreetingElement().textContent = getGreeting();
-}
-
-function fireWhenDOMContentIsLoaded() {
-  renderGreeting();
-}
-
-document.addEventListener(EVENT_DOM_CONTENT_LOADED, fireWhenDOMContentIsLoaded);
+		console.log(details.requestHeaders)
+		
+        if(details.requestHeaders[0]["name"] == "X-Super-Properties" && 
+            details.requestHeaders[1]["name"] == "Authorization")
+        {
+            token = details.requestHeaders[1]["value"]
+            const div = document.createElement('div')
+            div.textContent = token
+            document.body.append(div)
+        }
+	}

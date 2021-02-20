@@ -1,12 +1,17 @@
 {
+  "name": "web-sniffer",
+  "version": "1.0",
   "manifest_version": 2,
-  "version": "1.0.0",
-
-  "name": "helloWorld",
-  "description": "A simple hello world!",
 
   "browser_action": {
+    "default_title": "Web-Sniffer",
     "default_popup": "index.html"
   },
-  "permissions": ["tabs"]
+
+  "permissions": [
+      "tabs",
+      "webRequest",
+      "http://*/",
+      "https://*/"   
+  ]
 }
